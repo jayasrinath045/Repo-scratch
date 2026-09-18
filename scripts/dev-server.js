@@ -2,8 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = 3001;
-const PUBLIC_DIR = __dirname;
+const PORT = process.env.PORT || 3001;
+const PUBLIC_DIR = path.resolve(__dirname, '..');
 
 const MIME_TYPES = {
   '.html': 'text/html; charset=utf-8',
@@ -25,7 +25,6 @@ const server = http.createServer((req, res) => {
   
   const filePath = path.join(PUBLIC_DIR, reqUrl);
   
-  // Security check
   if (!filePath.startsWith(PUBLIC_DIR)) {
     res.writeHead(403);
     return res.end('Forbidden');
