@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const PORT = process.env.PORT || 3001;
+let port = parseInt(process.env.PORT, 10) || 3001;
 const PUBLIC_DIR = path.resolve(__dirname, '..');
 
 const MIME_TYPES = {
@@ -47,6 +47,24 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running at http://localhost:${PORT}/ and http://127.0.0.1:${PORT}/`);
+function startServer(p) {
+  server.listen(p, '0.0.0.0', () => {
+    console.log(`\n========================================`);
+    console.log(`  🚀 Shata Dev Server Running!`);
+    console.log(`  👉 Local:   http://localhost:${p}/`);
+    console.log(`  👉 Network: http://127.0.0.1:${p}/`);
+    console.log(`========================================\n`);
+  });
+}
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`⚠️ Port ${port} is currently in use, trying port ${port + 1}...`);
+    port += 1;
+    startServer(port);
+  } else {
+    console.error('Server error:', err);
+  }
 });
+
+startServer(port);
