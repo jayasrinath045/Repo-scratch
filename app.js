@@ -54,9 +54,8 @@ function setupMobileMenu() {
     drawer.innerHTML = `
       <div class="bg-white w-full max-w-md mx-auto rounded-t-3xl sm:rounded-b-3xl sm:rounded-t-none p-6 shadow-2xl border border-zinc-200 space-y-5 animate-slide-up">
         <div class="flex items-center justify-between border-b border-zinc-100 pb-4">
-          <div class="flex items-center gap-2.5">
+          <div class="flex items-center">
             <img src="./logo.png" alt="Shata Logo" class="h-10 w-auto object-contain"/>
-            <span class="text-xl font-black tracking-tight text-[#1E1105]">Shata</span>
           </div>
           <button id="close-mobile-drawer" class="h-9 w-9 flex items-center justify-center rounded-xl bg-zinc-100 text-zinc-600 hover:bg-zinc-200">
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
