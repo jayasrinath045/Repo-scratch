@@ -101,12 +101,13 @@ function setupAIChatbot() {
   const chatToggleBtn = document.querySelector('[aria-label="Toggle AI Consultant Chatbot"]');
   if (!chatToggleBtn) return;
 
-  // Create chat modal
+  // Create or get chat widget
   let chatBox = document.getElementById('ai-chat-widget');
   if (!chatBox) {
     chatBox = document.createElement('div');
     chatBox.id = 'ai-chat-widget';
-    chatBox.className = 'fixed bottom-22 right-4 sm:right-6 z-50 w-[92vw] sm:w-[370px] max-w-[400px] h-[450px] max-h-[calc(100vh-105px)] bg-white rounded-3xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden hidden transition-all duration-300 origin-bottom-right';
+    chatBox.className = 'chat-hidden';
+    chatBox.setAttribute('aria-label', 'Shata AI Event Advisor Window');
     chatBox.innerHTML = `
       <div class="p-4 bg-gradient-to-r from-[#FF6B2C] via-[#E05316] to-[#C8922A] text-white flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
@@ -120,7 +121,7 @@ function setupAIChatbot() {
             </span>
           </div>
         </div>
-        <button id="close-ai-chat" class="h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors">
+        <button id="close-ai-chat" class="h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition-colors cursor-pointer" aria-label="Close Chat">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"></path><path d="m6 6 12 12"></path></svg>
         </button>
       </div>
@@ -137,13 +138,13 @@ function setupAIChatbot() {
       </div>
 
       <div class="p-2.5 bg-white border-t border-zinc-100 flex gap-1.5 overflow-x-auto text-[11px] scrollbar-none">
-        <button class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors">
+        <button type="button" class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors cursor-pointer">
           💰 Average Wedding Cost
         </button>
-        <button class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors">
+        <button type="button" class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors cursor-pointer">
           📸 Best Photographers
         </button>
-        <button class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors">
+        <button type="button" class="ai-quick-btn shrink-0 px-3 py-1.5 rounded-full bg-zinc-100 hover:bg-orange-500/10 hover:text-[#FF6B2C] text-zinc-600 transition-colors cursor-pointer">
           🤝 Partner Onboarding
         </button>
       </div>
@@ -157,9 +158,13 @@ function setupAIChatbot() {
     `;
     document.body.appendChild(chatBox);
 
-    document.getElementById('close-ai-chat').addEventListener('click', () => {
-      chatBox.classList.add('hidden');
-    });
+    const closeBtn = document.getElementById('close-ai-chat');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeChat();
+      });
+    }
 
     const messagesContainer = document.getElementById('ai-chat-messages');
     const chatForm = document.getElementById('ai-chat-form');
@@ -217,7 +222,7 @@ function setupAIChatbot() {
       }, 500);
     });
 
-    document.querySelectorAll('.ai-quick-btn').forEach(btn => {
+    chatBox.querySelectorAll('.ai-quick-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const text = btn.innerText.trim();
         chatInput.value = text;
@@ -226,8 +231,29 @@ function setupAIChatbot() {
     });
   }
 
-  chatToggleBtn.addEventListener('click', () => {
-    chatBox.classList.toggle('hidden');
+  function openChat() {
+    chatBox.classList.remove('chat-hidden');
+    chatBox.classList.add('chat-visible');
+    const input = document.getElementById('ai-chat-input');
+    if (input) setTimeout(() => input.focus(), 150);
+  }
+
+  function closeChat() {
+    chatBox.classList.remove('chat-visible');
+    chatBox.classList.add('chat-hidden');
+  }
+
+  function toggleChat() {
+    if (chatBox.classList.contains('chat-visible')) {
+      closeChat();
+    } else {
+      openChat();
+    }
+  }
+
+  chatToggleBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    toggleChat();
   });
 }
 
