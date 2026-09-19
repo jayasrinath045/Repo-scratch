@@ -106,7 +106,7 @@ function setupAIChatbot() {
   if (!chatBox) {
     chatBox = document.createElement('div');
     chatBox.id = 'ai-chat-widget';
-    chatBox.className = 'fixed bottom-24 right-6 z-50 w-[92vw] sm:w-[380px] h-[520px] bg-white rounded-3xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden hidden transition-all duration-300';
+    chatBox.className = 'fixed bottom-22 right-4 sm:right-6 z-50 w-[92vw] sm:w-[370px] max-w-[400px] h-[450px] max-h-[calc(100vh-105px)] bg-white rounded-3xl shadow-2xl border border-zinc-200 flex flex-col overflow-hidden hidden transition-all duration-300 origin-bottom-right';
     chatBox.innerHTML = `
       <div class="p-4 bg-gradient-to-r from-[#FF6B2C] via-[#E05316] to-[#C8922A] text-white flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-3">
